@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Consultants index{% endblock %}
+
+{% block body %}
+    <h1>Consultants index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Numsecu</th>
+                <th>Sexe</th>
+                <th>Ddn</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for consultant in consultants %}
+            <tr>
+                <td>{{ consultant.id }}</td>
+                <td>{{ consultant.nom }}</td>
+                <td>{{ consultant.prenom }}</td>
+                <td>{{ consultant.numsecu }}</td>
+                <td>{{ consultant.sexe }}</td>
+                <td>{{ consultant.ddn ? consultant.ddn|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('consultants_show', {'id': consultant.id}) }}">show</a>
+                    <a href="{{ path('consultants_edit', {'id': consultant.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('consultants_new') }}">Create new</a>
+{% endblock %}
