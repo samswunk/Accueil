@@ -20,12 +20,12 @@ class Medinf
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="bigint")
      */
     private $matricule;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=100)
      */
     private $nom;
 
@@ -35,47 +35,28 @@ class Medinf
     private $prenom;
 
     /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $telmedinf;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $adresse;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
-    private $telpro;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Fonction::class, inversedBy="id")
-     */
-    private $fonction;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Metier::class, inversedBy="codeprofession")
+     * @ORM\ManyToMany(targetEntity=Metier::class, inversedBy="medinfs")
      */
     private $metier;
 
-    public function getMetier(): ?Metier
+    /**
+     * @ORM\ManyToOne(targetEntity=Fonction::class, inversedBy="medinfs")
+     */
+    private $fonction;
+
+    public function __construct()
     {
-        return $this->metier;
-    }
-
-    public function setMetier(?Metier $metier): self
-    {
-        $this->metier = $metier;
-
-        return $this;
-    }
-
-    public function getFonction(): ?Fonction
-    {
-        return $this->fonction;
-    }
-
-    public function setFonction(?Fonction $fonction): self
-    {
-        $this->fonction = $fonction;
-
-        return $this;
+        $this->metier = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +100,18 @@ class Medinf
         return $this;
     }
 
+    public function getTelmedinf(): ?string
+    {
+        return $this->telmedinf;
+    }
+
+    public function setTelmedinf(?string $telmedinf): self
+    {
+        $this->telmedinf = $telmedinf;
+
+        return $this;
+    }
+
     public function getAdresse(): ?string
     {
         return $this->adresse;
@@ -131,16 +124,39 @@ class Medinf
         return $this;
     }
 
-    public function getTelpro(): ?string
+    /**
+     * @return Collection|Metier[]
+     */
+    public function getMetier(): Collection
     {
-        return $this->telpro;
+        return $this->metier;
     }
 
-    public function setTelpro(?string $telpro): self
+    public function addMetier(Metier $metier): self
     {
-        $this->telpro = $telpro;
+        if (!$this->metier->contains($metier)) {
+            $this->metier[] = $metier;
+        }
 
         return $this;
     }
 
+    public function removeMetier(Metier $metier): self
+    {
+        $this->metier->removeElement($metier);
+
+        return $this;
+    }
+
+    public function getFonction(): ?Fonction
+    {
+        return $this->fonction;
+    }
+
+    public function setFonction(?Fonction $fonction): self
+    {
+        $this->fonction = $fonction;
+
+        return $this;
+    }
 }

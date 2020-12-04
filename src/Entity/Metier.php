@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MetierRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,16 +22,38 @@ class Metier
     /**
      * @ORM\Column(type="string", length=50)
      */
+    private $codeprofession;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $libmetier;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\ManyToMany(targetEntity=Medinf::class, mappedBy="metier")
      */
-    private $codeprofession;
+    private $medinfs;
+
+    public function __construct()
+    {
+        $this->medinfs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getCodeprofession(): ?string
+    {
+        return $this->codeprofession;
+    }
+
+    public function setCodeprofession(string $codeprofession): self
+    {
+        $this->codeprofession = $codeprofession;
+
+        return $this;
     }
 
     public function getLibmetier(): ?string
@@ -44,14 +68,29 @@ class Metier
         return $this;
     }
 
-    public function getCodeprofession(): ?string
+    /**
+     * @return Collection|Medinf[]
+     */
+    public function getMedinfs(): Collection
     {
-        return $this->codeprofession;
+        return $this->medinfs;
     }
 
-    public function setCodeprofession(string $codeprofession): self
+    public function addMedinf(Medinf $medinf): self
     {
-        $this->codeprofession = $codeprofession;
+        if (!$this->medinfs->contains($medinf)) {
+            $this->medinfs[] = $medinf;
+            $medinf->addMetier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedinf(Medinf $medinf): self
+    {
+        if ($this->medinfs->removeElement($medinf)) {
+            $medinf->removeMetier($this);
+        }
 
         return $this;
     }
