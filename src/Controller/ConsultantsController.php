@@ -15,13 +15,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ConsultantsController extends AbstractController
 {
+    // /**
+    //  * @Route("/", name="consultants_index", methods={"GET"})
+    //  */
+    // public function index(ConsultantsRepository $consultantsRepository): Response
+    // {
+    //     return $this->render('consultants/index.html.twig', [
+    //         'consultants' => $consultantsRepository->findAll(),
+    //     ]);
+    // }
+
     /**
      * @Route("/", name="consultants_index", methods={"GET"})
      */
     public function index(ConsultantsRepository $consultantsRepository): Response
     {
         return $this->render('consultants/index.html.twig', [
-            'consultants' => $consultantsRepository->findAll(),
+            'consultants' => $consultantsRepository->findAllBySql(),
         ]);
     }
 
