@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Medinf{% endblock %}
+
+{% block body %}
+    <h1>Edit Medinf</h1>
+
+    {{ include('medinf/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('medinf_index') }}" class="btn btn-sm btn-secondary"><i class="fas fa-backspace"></i></a>
+
+    {{ include('medinf/_delete_form.html.twig') }}
+{% endblock %}

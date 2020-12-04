@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fonction{% endblock %}
+
+{% block body %}
+    <h1>Fonction</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fonction.id }}</td>
+            </tr>
+            <tr>
+                <th>Libfonction</th>
+                <td>{{ fonction.libfonction }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('fonction_index') }}" class="btn btn-sm btn-secondary"><i class="fas fa-backspace"></i></a>
+
+    <a href="{{ path('fonction_edit', {'id': fonction.id}) }}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+
+    {{ include('fonction/_delete_form.html.twig') }}
+{% endblock %}
