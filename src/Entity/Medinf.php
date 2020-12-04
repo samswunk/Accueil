@@ -35,7 +35,7 @@ class Medinf
     private $prenom;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telmedinf;
 

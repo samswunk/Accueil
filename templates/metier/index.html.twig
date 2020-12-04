@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Metier index{% endblock %}
+
+{% block body %}
+    <h1>Metier index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Codeprofession</th>
+                <th>Libmetier</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for metier in metiers %}
+            <tr>
+                <td>{{ metier.id }}</td>
+                <td>{{ metier.codeprofession }}</td>
+                <td>{{ metier.libmetier }}</td>
+                <td>
+                    <a href="{{ path('metier_show', {'id': metier.id}) }}" class=""><i class="fas fa-eye"></i></button></a>
+                    <a href="{{ path('metier_edit', {'id': metier.id}) }}" class=""><i class="fas fa-edit"></i></button></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('metier_new') }}">Create new</a>
+{% endblock %}

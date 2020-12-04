@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Medinf{% endblock %}
+
+{% block body %}
+<div class="col-12">
+    {{ include('medinf/_form.html.twig', {'button_label': 'Enregistrer','attr':{'class':'btn btn-sm btn-dark'}}) }}
+</div>
+{% endblock %}

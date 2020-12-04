@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Medinf;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use PDO;
 
 /**
  * @method Medinf|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,7 +20,32 @@ class MedinfRepository extends ServiceEntityRepository
         parent::__construct($registry, Medinf::class);
     }
 
-    // /**
+    public function findBySql()
+    {
+        $sql = "SELECT  Medinf.id, 
+                        nom, 
+                        prenom, 
+                        matricule, 
+                        telmedinf, 
+                        adresse, 
+                        fonction.libfonction,
+                        CONCAT(metier.libmetier,' (',metier.codeprofession,')') as metier
+                FROM    Medinf
+                LEFT JOIN Fonction
+                ON      Medinf.fonction_id = fonction.id
+                left join medinf_metier m 
+                on 		Medinf.id = m.medinf_id 
+                    left join metier
+                    on metier.id = m.metier_id";
+
+        // $params['color'] = 'blue';
+        $entityManager = $this->getEntityManager();
+        //create the prepared statement, by getting the doctrine connection
+        $stmt = $entityManager->getConnection()->prepare($sql);
+        $stmt->execute();
+        //I used FETCH_COLUMN because I only needed one Column.
+        return $stmt->fetchAllAssociative(PDO::FETCH_COLUMN);
+    }
     //  * @return Medinf[] Returns an array of Medinf objects
     //  */
     /*
@@ -35,7 +61,7 @@ class MedinfRepository extends ServiceEntityRepository
         ;
     }
     */
-
+    
     /*
     public function findOneBySomeField($value): ?Medinf
     {

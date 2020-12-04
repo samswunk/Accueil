@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medinf{% endblock %}
+
+{% block body %}
+    <h1>Medinf</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ medinf.id }}</td>
+            </tr>
+            <tr>
+                <th>Matricule</th>
+                <td>{{ medinf.matricule }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ medinf.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ medinf.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Telmedinf</th>
+                <td>{{ medinf.telmedinf }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ medinf.adresse }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('medinf_index') }}" class="btn btn-sm btn-secondary"><i class="fas fa-backspace"></i></a>
+
+    <a href="{{ path('medinf_edit', {'id': medinf.id}) }}" class=""><i class="fas fa-edit"></i></button></a>
+
+    {{ include('medinf/_delete_form.html.twig') }}
+{% endblock %}
