@@ -3,10 +3,114 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ '/jquery-ui/jquery-ui.css' }}" >
+            <link rel="stylesheet" href="{{ '/fontawesome/css/all.css' }}">
+            <link rel="stylesheet" href="{{ '/DataTables-1.10.22/css/jquery.dataTables.min.css' }}">
+            <link rel="stylesheet" href="{{ '/DataTables-1.10.22/css/dataTables.foundation.min.css' }}">
+            <link rel="stylesheet" href="{{ '/bootstrap/css/bootstrap.min.css' }}" >
+            <link rel="stylesheet" href="{{ '/datetimepicker/datetimepicker.css' }}">
+            <link rel="stylesheet" href="{{ '/datetimepicker/jquery.datetimepicker.min.css' }}">
+        {% endblock %}
     </head>
-    <body>
+    <body class="container border border-gray" style="font-family: Roboto,sans-serif;">
+        <div class="container">
+          <nav class="navbar navbar-expand-lg navbar-light bg-white  border border-gray">
+            <a class="navbar-brand" href="#"><img src="" alt=""> 
+            </a>
+            <small>
+              <small>
+                {% set UserRole = 'Utilisateur' %} 
+                {% set UserId = null %} 
+                {% if app.user %}
+                  {% set UserId = app.user.id %} 
+                  {% for role in app.user.roles %}
+                    {% if role == 'ROLE_ADMIN' %}
+                      {% set UserRole = 'Administrateur' %} 
+                    {% endif %}
+                  {% endfor %}
+                  Bonjour, {{ UserRole }} {{ app.user.nom ?? "inconnu" }}
+                {% else %}
+                  Pas connecté
+                {% endif %}
+              </small>
+            </small>
+              <button   class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" 
+                        aria-expanded="false" aria-label="Toggle navigation">
+                <span   class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active ml-2">
+                    <a class="nav-link" href="{{ path('consultants_index') }}">Accueil <span class="sr-only">(current)</span></a>
+                  </li>
+                  {% if UserRole == 'Administrateur' %}
+                  <li class="nav-item dropdown ml-2">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">Calendrier</a>
+                      <a class="dropdown-item" href="#">Liste des rendez-vous</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Liste des examens</a>
+                      <a class="dropdown-item" href="#">Liste des prévus</a>
+                    </div>
+                  </li>
+                  {% endif %}
+                  {% if UserId is not null %}
+                  <li class="nav-item ml-2">
+                    <a class="nav-link" href="#">Mes informations</a>
+                  </li>            
+                  {% endif %}
+                </ul>
+                <ul>
+                    <li class="navbar-nav active navbar-right">
+                      {% if UserId is not null %}
+                        <a class="nav-link btn btn-outline-danger" href="#">Déconnexion<span class="sr-only bg-danger"></span></a>
+                      {% else %}
+                        <a class="nav-link btn btn-outline-success" href="#">Se connecter<span class="sr-only bg-Success"></span></a>
+                      {% endif %}
+                    </li>
+                </ul>
+                {# <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2" type="text" placeholder="Rechercher">
+                  <button class="btn btn-secondary my-2 my-sm-0" type="submit">Recherche</button>
+                </form> #}
+              </div>
+          </nav>
+          <div class="col-12"></div>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+    <script src="{{ '/js/jquery.js' }}">   </script>
+    <script src="{{ '/jquery-ui/jquery-ui.js' }}">   </script>
+    <script src="{{ '/DataTables-1.10.22/js/jquery.dataTables.min.js' }}">   </script>
+    <script src="{{ '/DataTables-1.10.22/js/dataTables.foundation.min.js' }}">   </script>
+    <script src="{{ '/bootstrap/js/bootstrap.js' }}">   </script>
+    <script src="{{ '/moment/moment.js' }}">   </script>
+    <script src="{{ '/moment/moment-timezone.js' }}">   </script>
+    <script src="{{ '/moment/moment-with-locales.js' }}">   </script>
+    <script src="{{ '/datetimepicker/datetimepicker.js' }}">   </script>
+    <script src="{{ '/datetimepicker/jquery.datetimepicker.full.min.js' }}">   </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            console.log("HELLO");
+            $('.table').DataTable();
+            
+            // moment.tz.add("Europe/Paris|PMT WET WEST CEST CET WEMT|-9.l 0 -10 -20 -10 -20|0121212121212121212121212121212121212121212121212123434352543434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434|-2nco8.l cNb8.l HA0 19A0 1iM0 11c0 1oo0 Wo0 1rc0 QM0 1EM0 UM0 1u00 10o0 1io0 1wo0 Rc0 1a00 1fA0 1cM0 1cM0 1io0 17c0 1fA0 1a00 1io0 1a00 1io0 17c0 1fA0 1a00 1io0 17c0 1cM0 1cM0 1a00 1io0 1cM0 1cM0 1a00 1fA0 1io0 17c0 1cM0 1cM0 1a00 1fA0 1io0 1qM0 Df0 Ik0 5M30 WM0 1fA0 1cM0 Vx0 hB0 1aq0 16M0 1ekn0 1cL0 1fC0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|11e6") #}
+            
+            function getFormattedDate(date) 
+            {
+              let year = date.getFullYear();
+              let month = (1 + date.getMonth()).toString().padStart(2, '0');
+              let day = date.getDate().toString().padStart(2, '0');
+              let hour = date.getHours().toString().padStart(2, '0');
+              let min = date.getMinutes().toString().padStart(2, '0');
+              return day + '/' + month + '/' + year+' '+hour+':'+min;
+            }
+            
+            $('.datetimepicker').datetimepicker();
+        } );
+    </script>
+        {% endblock %}
     </body>
 </html>

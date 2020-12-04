@@ -34,6 +34,7 @@ class ConsultantsController extends AbstractController
         $form = $this->createForm(ConsultantsType::class, $consultant);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($consultant);
@@ -63,15 +64,16 @@ class ConsultantsController extends AbstractController
      */
     public function edit(Request $request, Consultants $consultant): Response
     {
+        
         $form = $this->createForm(ConsultantsType::class, $consultant);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            
             return $this->redirectToRoute('consultants_index');
         }
-
+        // dd($consultant);
         return $this->render('consultants/edit.html.twig', [
             'consultant' => $consultant,
             'form' => $form->createView(),

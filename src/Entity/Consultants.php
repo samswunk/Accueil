@@ -54,6 +54,11 @@ class Consultants
      */
     private $parent;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Convocations::class, mappedBy="nti", cascade={"persist", "remove"})
+     */
+    private $convo;
+
     public function __construct()
     {
         $this->parent = new ArrayCollection();
@@ -161,6 +166,24 @@ class Consultants
             if ($parent->getEnfant() === $this) {
                 $parent->setEnfant(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getConvo(): ?Convocations
+    {
+        return $this->convo;
+    }
+
+    public function setConvo(?Convocations $convo): self
+    {
+        $this->convo = $convo;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newNti = null === $convo ? null : $this;
+        if ($convo->getNti() !== $newNti) {
+            $convo->setNti($newNti);
         }
 
         return $this;
