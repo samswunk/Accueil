@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Consultants index{% endblock %}
+
+{% block body %}
+    <h1>Liste des consultants</h1>
+    {{ include('/consultants/_table.html.twig') }}
+    <a href="{{ path('consultants_new') }}">Create new</a>
+{% endblock %}

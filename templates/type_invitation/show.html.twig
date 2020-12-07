@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeInvitation{% endblock %}
+
+{% block body %}
+    <h1>TypeInvitation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ type_invitation.id }}</td>
+            </tr>
+            <tr>
+                <th>Libtypeinvitation</th>
+                <td>{{ type_invitation.libtypeinvitation }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('type_invitation_index') }}">back to list</a>
+
+    <a href="{{ path('type_invitation_edit', {'id': type_invitation.id}) }}">edit</a>
+
+    {{ include('type_invitation/_delete_form.html.twig') }}
+{% endblock %}

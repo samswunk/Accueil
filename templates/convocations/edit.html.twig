@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Convocations{% endblock %}
+
+{% block body %}
+    <h1>Edit Convocations</h1>
+
+    {{ include('convocations/_form.html.twig', {'button_label': '<i class="fas fa-sync"></i>'}) }}
+
+    <a href="{{ path('convocations_index') }}" class="btn btn-sm btn-secondary"><i class="fas fa-backspace"></i></a>
+
+    {{ include('convocations/_delete_form.html.twig') }}
+{% endblock %}

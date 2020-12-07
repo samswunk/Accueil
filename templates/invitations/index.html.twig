@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Invitations{% endblock %}
+
+{% block body %}
+    <h1 class=" mb-4">Liste des invitations</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Dateinvitation</th>
+                <th>Nbrpersonnes</th>
+                <th>type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for invitation in invitations %}
+            <tr>
+                <td>{{ invitation.id }}</td>
+                <td>{{ invitation.dateinvitation ? invitation.dateinvitation|date('d/m/Y H:i') : '' }}</td>
+                <td>{{ invitation.nbrpersonnes }}</td>
+                <td>{{ invitation.typeinvitation.libtypeinvitation }}</td>
+                <td class="form-inline">
+                    <a href="{{ path('invitations_show', {'id': invitation.id}) }}" class="btn-sm btn-primary fas fa-eye rounded"></a>
+                    <a href="{{ path('invitations_edit', {'id': invitation.id}) }}" class="btn-sm btn-success fas fa-edit ml-1"></a>
+                    <a href="{{ path('invitations_detail', {'invitid': invitation.id}) }}" class="btn-sm btn-success fas fa-list ml-1"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('invitations_new') }}">Create new</a>
+{% endblock %}

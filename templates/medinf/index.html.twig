@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medinf index{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Liste du corps médical <a href="{{ path('medinf_new') }}" class="btn-sm btn-secondary small"><i class="fas fa-plus-square"></i></a></h1>
+    <table class="table small compact">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Matricule</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Telmedinf</th>
+                <th>Adresse</th>
+                <th>F°</th>
+                <th>Spécialité</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for medinf in medinfs %}
+            <tr>
+                <td>{{ medinf.id }}</td>
+                <td>{{ medinf.matricule }}</td>
+                <td>{{ medinf.nom }}</td>
+                <td>{{ medinf.prenom }}</td>
+                <td>{{ medinf.telmedinf }}</td>
+                <td>{{ medinf.adresse }}</td>
+                <td>{{ medinf.libfonction }}</td>
+                <td>{{ medinf.metier }}</td>
+                <td>
+                    <a href="{{ path('medinf_show', {'id': medinf.id}) }}" class=""><i class="fas fa-eye rounded"></i></button></a>
+                    <a href="{{ path('medinf_edit', {'id': medinf.id}) }}" class=""><i class="fas fa-edit rounded"></i></button></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
