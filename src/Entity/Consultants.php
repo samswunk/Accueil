@@ -59,9 +59,15 @@ class Consultants
      */
     private $convo;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Invitations::class, mappedBy="nti")
+     */
+    private $invitations;
+
     public function __construct()
     {
         $this->parent = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +190,33 @@ class Consultants
         $newNti = null === $convo ? null : $this;
         if ($convo->getNti() !== $newNti) {
             $convo->setNti($newNti);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitations[]
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitations $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->addNti($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitations $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            $invitation->removeNti($this);
         }
 
         return $this;

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New TypeInvitation{% endblock %}
+
+{% block body %}
+    <h1>Create new TypeInvitation</h1>
+
+    {{ include('type_invitation/_form.html.twig') }}
+
+    <a href="{{ path('type_invitation_index') }}">back to list</a>
+{% endblock %}

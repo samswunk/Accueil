@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invitations index{% endblock %}
+
+{% block body %}
+    <h1>Invitation {{invitations[0]['libtypeinvitation']}} N°{{ invitid }} <br> du 
+        <input  class="border-0 bg-transparent dt-datetime datetimepicker h1" 
+                value="{{ date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY à HH:mm") }}"
+                size="25" >
+                 {# à 
+        <input  class="border-0 bg-transparent fa-business-time timepicker h1" 
+                value="{{ date|date('H:i') }}" size="4" style="width: 110px;"> #}
+            </h1>
+    <div class="col-12 alert-warning">Nbr de personnes {{ nbrinvites }} 
+                                        / 
+                                        {% if invitations[0]['nbrpersonnes'] > nbrinvites %}
+                                            <a href="{{ path('modif_nbrmax_invitation', {'invitid': invitid,'ajout':0}) }}" class="fas fa-minus-circle"></a>
+                                        {% else %}
+                                            <i class="fas fa-minus-circle text-black-50"></i>
+                                        {% endif %}
+                                        <input class="border-0 bg-transparent" value={{ invitations[0]['nbrpersonnes'] }} id="nbrPersMax" size="1" style="width: 15px;">
+                                            <a   href="{{ path('modif_nbrmax_invitation', {'invitid': invitid,'ajout':1}) }}" 
+                                                 class="fas fa-plus-circle"></a>
+    </div>
+    <div class="mt-2">
+        {# |date('D d M Y', "Europe/Paris") #}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Numsecu</th>
+                    <th>Sexe</th>
+                    <th>Ddn</th>
+                    <th>type</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for invitation in invitations %}
+                <tr class={% if invitation.dateinvitation %} "bg-primary" {% else %} "" {% endif %}  >
+                    <td>{{ invitation.id }}</td>
+                    <td>{{ invitation.nom }}</td>
+                    <td>{{ invitation.prenom }}</td>
+                    <td>{{ invitation.numsecu }}</td>
+                    <td>{{ invitation.sexe }}</td>
+                    <td>{{ invitation.ddn ? invitation.ddn|date('d/m/Y') : '' }}</td>
+                    {# <td>{{ invitation.dateinvitation ? invitation.dateinvitation|date('d/m/Y H:i') : '' }}</td> #}
+                    {# <td>{{ invitation.nbrpersonnes }}</td> #}
+                    <td>{{ invitation.libtypeinvitation }}</td>
+                    <td>
+                        {% if invitation.dateinvitation %}
+                            <a href="{{ path('inviter_pers', {'id': invitation.id,'invitid':invitid,'inviter':0}) }}" class="btn-sm btn-danger fas fa-trash"></a>
+                        {% elseif not(invitation.dateinvitation) and nbrinvites < invitations[0]['nbrpersonnes'] %}
+                            <a href="{{ path('inviter_pers', {'id': invitation.id,'invitid':invitid,'inviter':1}) }}" class="btn-sm btn-success fas fa-plus-square"></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ path('invitations_new') }}">Create new</a>
+{% endblock %}

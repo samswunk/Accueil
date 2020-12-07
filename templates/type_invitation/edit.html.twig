@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TypeInvitation{% endblock %}
+
+{% block body %}
+    <h1>Edit TypeInvitation</h1>
+
+    {{ include('type_invitation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('type_invitation_index') }}">back to list</a>
+
+    {{ include('type_invitation/_delete_form.html.twig') }}
+{% endblock %}

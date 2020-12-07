@@ -52,6 +52,8 @@
                       <a class="dropdown-item" href="{{ path('consultants_index') }}">Liste des rendez-vous</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Liste des examens</a>
+                      <a class="dropdown-item" href="{{ path('invitations_index') }}">Liste des invitations</a>
+                      <a class="dropdown-item" href="{{ path('type_invitation_index') }}">Liste des types d'invitations</a>
                       <a class="dropdown-item" href="{{ path('metier_index') }}">Liste des métiers</a>
                       <a class="dropdown-item" href="{{ path('fonction_index') }}">Liste des fonctions</a>
                       <a class="dropdown-item" href="{{ path('medinf_index') }}">Équipe médicale</a>
@@ -95,7 +97,16 @@
 
           <script type="text/javascript">
               $(document).ready(function() {
-                  console.log("HELLO");
+              
+                jQuery.datetimepicker.setLocale('fr');
+              
+              $('body').on('click', '.add_item_link', function(e) {
+                  console.log('Clikc');
+                  var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+                  // add a new tag form (see next code block)
+                  addFormToCollection($collectionHolderClass);
+              })
+              
                   $('.table').DataTable();
                   
                   // moment.tz.add("Europe/Paris|PMT WET WEST CEST CET WEMT|-9.l 0 -10 -20 -10 -20|0121212121212121212121212121212121212121212121212123434352543434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434|-2nco8.l cNb8.l HA0 19A0 1iM0 11c0 1oo0 Wo0 1rc0 QM0 1EM0 UM0 1u00 10o0 1io0 1wo0 Rc0 1a00 1fA0 1cM0 1cM0 1io0 17c0 1fA0 1a00 1io0 1a00 1io0 17c0 1fA0 1a00 1io0 17c0 1cM0 1cM0 1a00 1io0 1cM0 1cM0 1a00 1fA0 1io0 17c0 1cM0 1cM0 1a00 1fA0 1io0 1qM0 Df0 Ik0 5M30 WM0 1fA0 1cM0 Vx0 hB0 1aq0 16M0 1ekn0 1cL0 1fC0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|11e6");
@@ -110,7 +121,24 @@
                     return day + '/' + month + '/' + year+' '+hour+':'+min;
                   }
                   
-                  $('.datetimepicker').datetimepicker();
+                  $('.datetimepicker').datetimepicker(
+                    {
+                      format:'d/m/Y H:i',
+                      lang:'fr'
+                    });
+                  $('.datepicker').datetimepicker(
+                    {
+                      format:'d/m/Y',
+                      timepicker:false,
+                      lang:'fr'
+                    });
+                  $('.timepicker').datetimepicker(
+                    {
+                      format:'H:i',
+                      timepicker:true,
+                      datepicker:false,
+                      lang:'fr'
+                    });
               } );
           </script>
         {% endblock %}

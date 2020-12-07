@@ -2,12 +2,12 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Consultants as EntityConsultants;
+use App\Entity\Consultants;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-class Consultants extends Fixture
+class ConsultantsFixture extends Fixture
 {
     public function load(ObjectManager $manager)
     {
@@ -15,7 +15,7 @@ class Consultants extends Fixture
 
         for ($i=0; $i < 100 ; $i++) { 
 
-            $consultant = new EntityConsultants();
+            $consultant = new Consultants();
             
             $consultant->setNom($Faker->firstName);
             $consultant->setPrenom($Faker->lastName);

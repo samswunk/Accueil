@@ -80,22 +80,6 @@ class ConsultantsRepository extends ServiceEntityRepository
     // /**
     //  * @return Consultants[] Returns an array of Consultants objects
     //  */
-    
-    public function findAllBySql2($value)
-    {
-        $rsm = new ResultSetMapping();
-        // build rsm here
-
-        $query = $this->entityManager->createNativeQuery('SELECT id, endant_id, nom, prenom, numsecu, sexe, ddn FROM Consultants'); // WHERE name = ?', $rsm);
-        // $query->setParameter(1, 'romanb');
-
-        $consultants = $query->getResult();
-
-        return $consultants;
-    }
-    // /**
-    //  * @return Consultants[] Returns an array of Consultants objects
-    //  */
     /*
     public function findByExampleField($value)
     {
