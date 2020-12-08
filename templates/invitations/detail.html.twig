@@ -3,25 +3,26 @@
 {% block title %}Invitations index{% endblock %}
 
 {% block body %}
-    <h1>Invitation {{invitations[0]['libtypeinvitation']}} N°{{ invitid }} <br> du 
-        <input  class="border-0 bg-transparent dt-datetime datetimepicker h1" 
-                value="{{ date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY à HH:mm") }}"
-                size="25" >
-                 {# à 
-        <input  class="border-0 bg-transparent fa-business-time timepicker h1" 
-                value="{{ date|date('H:i') }}" size="4" style="width: 110px;"> #}
-            </h1>
-    <div class="col-12 alert-warning">Nbr de personnes {{ nbrinvites }} 
-                                        / 
-                                        {% if invitations[0]['nbrpersonnes'] > nbrinvites %}
-                                            <a href="{{ path('modif_nbrmax_invitation', {'invitid': invitid,'ajout':0}) }}" class="fas fa-minus-circle"></a>
-                                        {% else %}
-                                            <i class="fas fa-minus-circle text-black-50"></i>
-                                        {% endif %}
-                                        <input class="border-0 bg-transparent" value={{ invitations[0]['nbrpersonnes'] }} id="nbrPersMax" size="1" style="width: 15px;">
-                                            <a   href="{{ path('modif_nbrmax_invitation', {'invitid': invitid,'ajout':1}) }}" 
-                                                 class="fas fa-plus-circle"></a>
-    </div>
+    {{ include('invitations/multi.html.twig') }}
+        <a  class="dropdown-item bg-light" 
+            href="#" data-toggle="modal" data-target="#ShowInvitation">
+            <h1>Invitation {{invitations[0]['libtypeinvitation']}} N°{{ invitid }} <br> du {{ date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY à HH:mm") }}
+                        {# à 
+                <input  class="border-0 bg-transparent fa-business-time timepicker h1" 
+                        value="{{ date|date('H:i') }}" size="4" style="width: 110px;"> #}
+                </h1>
+        </a>
+        <div class="col-12 alert-warning">Nbr de personnes {{ nbrinvites }} 
+                                            / 
+                                            {% if invitations[0]['nbrpersonnes'] > nbrinvites %}
+                                                <a href="{{ path('modif_nbrmax_invitation', {'invitid': invitid,'ajout':0}) }}" class="fas fa-minus-circle"></a>
+                                            {% else %}
+                                                <i class="fas fa-minus-circle text-black-50"></i>
+                                            {% endif %}
+                                            <input class="border-0 bg-transparent text-center" value={{ invitations[0]['nbrpersonnes'] }} id="nbrPersMax" size="1" style="width: 22px;">
+                                                <a   href="{{ path('modif_nbrmax_invitation', {'invitid': invitid,'ajout':1}) }}" 
+                                                    class="fas fa-plus-circle"></a>
+        </div>
     <div class="mt-2">
         {# |date('D d M Y', "Europe/Paris") #}
         <table class="table">
