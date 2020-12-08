@@ -1,0 +1,45 @@
+{# SHOW Invitations MODAL #}
+<div    class="modal fade bg-light" 
+        style="height: 90%; min-width: 80%;"
+        id="ShowInvitation" tabindex="-1" role="dialog" aria-labelledby="ModalInvitations" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">      
+    <div class="modal-content">
+    <div class="modal-header alert alert-danger">
+        <h4 id="Invitations_titreShowInvitations" class="modal-titlecenter">Invitation {{invitations[0]['libtypeinvitation']}} N°{{ invitid }} <br> du {{ date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY à HH:mm") }}</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+    <form id="Invitations" class="col-12 row" action="{{ path('invitations_edit',{'id':invitid}) }}" method="POST">
+        <input type="hidden" name="invitations[invitid]" id="invitid" value="{{ invitid }}">
+        <div class="m-0 p-0 row col-12" id="divContenu">
+        <div class="row col-12">
+            <label class="col-4" for="Date_Invitation">Date invitation</label>
+            <input  type="text" class="form-control input-inline datetimepicker col-8" 
+                    id="Date_Invitation" name="invitations[dateinvitation]" 
+                    required="required" data-provide="datetimepicker" format="dd/MM/yyyy HH:mm" input="string" input_format="d-M-Y HH:mm"
+                    value="{{date|format_datetime(locale='fr',pattern="dd/MM/YYYY HH:mm")}}">
+        </div>
+        <div class="row col-12">
+            <label class="col-4" for="NbrMax_Invitation">Nbr de personnes max</label>
+            <input  type="number" class="form-control col-8" 
+                    id="NbrMax_Invitation" name="invitations[nbrpersonnes]" placeholder="Selectionnez un nbr maximum"
+                    value="{{ invitations[0]['nbrpersonnes'] }}">
+        </div>
+        <div class="row col-12">
+            <label    class="col-4" for="Type_Invitation">Type d'invitation</label>
+            <select class="form-control col-8" id="Type_Invitation" name="invitations[typeinvitation]">
+                <option value="2">{{invitations[0]['libtypeinvitation']}}</option>
+            </select>
+        </div>
+        <input type="hidden" id="invitations_token" name="token" value="{{ csrf_token('edit') }}">
+        </div>
+        <div class="modal-footer row col-12">
+        <button class="btn btn-success"  id="Invitations_submit_button">Sauvegarder</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" id="Invitations_close_button">Fermer</button>
+        </div>
+    </form>
+    </div>
+    </div>
+    </div>
+</div>
+{# END Invitations MODAL #}

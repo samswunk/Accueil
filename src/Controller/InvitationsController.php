@@ -70,7 +70,7 @@ class InvitationsController extends AbstractController
         
         $invit  = $invitationsRepository->findAllBySqlBy($invitid);
         $nbrinvites = $invitationsRepository->NbrPersInvit($invitid);
-        return $this->redirectToRoute('invitations_detail', [
+        return $this->render('invitations/detail.html.twig', [
             'invitations'   => $invit,
             'invitid'       => $invitid,
             'date'          => $invit[0]['dateinvitation'],
@@ -108,8 +108,8 @@ class InvitationsController extends AbstractController
         
         $invit  = $invitationsRepository->findAllBySqlBy($invitid);
         $nbrinvites = $invitationsRepository->NbrPersInvit($invitid);
-
-        return $this->redirectToRoute('invitations_detail', [
+        
+        return $this->render('invitations/detail.html.twig', [
             'invitations'   => $invit,
             'invitid'       => $invitid,
             'date'          => $invit[0]['dateinvitation'],
@@ -185,15 +185,32 @@ class InvitationsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="invitations_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Invitations $invitation): Response
+    public function edit(Request $request, Invitations $invitation, InvitationsRepository $invitationsRepository,$id): Response
     {
         $form = $this->createForm(InvitationsType::class, $invitation);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        $submittedToken = $request->request->get('token');
+        // if ($this->isCsrfTokenValid('delete-item', $submittedToken)) {
+            
+        if ($form->isSubmitted() && ($form->isValid() || $this->isCsrfTokenValid('edit', $submittedToken))) {
+        
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('invitations_index');
+            
+            if ($this->isCsrfTokenValid('edit', $submittedToken)) {
+                $invitid = $id;
+                $invit  = $invitationsRepository->findAllBySqlBy($invitid);
+                $nbrinvites = $invitationsRepository->NbrPersInvit($invitid);
+                // dd($request,$form->isValid(),$submittedToken,$this->isCsrfTokenValid('edit', $submittedToken));
+                return $this->render('invitations/detail.html.twig', [
+                    'invitations'   => $invit,
+                    'invitid'       => $invitid,
+                    'date'          => $invit[0]['dateinvitation'],
+                    'nbrinvites'    => $nbrinvites[0]['nbrpersinvites']
+                ]);
+            }
+            else {
+                return $this->redirectToRoute('invitations_index');
+            }
         }
 
         return $this->render('invitations/edit.html.twig', [
