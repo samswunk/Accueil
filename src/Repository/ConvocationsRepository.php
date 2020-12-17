@@ -22,23 +22,21 @@ class ConvocationsRepository extends ServiceEntityRepository
 
     public function findAllBySqlBy($convocationid)
     {
-        $sql = "SELECT  s.id as idconvo, 
-                        consultants.id, 
-                        nom, 
-                        prenom, 
-                        numsecu, 
-                        CASe sexe when '1' then 
-                            'M' ELSE 
-                            'F' 
-                        end as sexe, 
+        $sql = "SELECT  s.id as idconvo,
+                        consultants.id,
+                        nom,
+                        prenom,
+                        numsecu,
+                        CASe sexe when '1' then
+                            'M' ELSE
+                            'F'
+                        end as sexe,
                         ddn,
                         s.nbrpersonnes, s.dateconvocation
-                FROM    consultants
-                LEFT JOIN convocations_consultants i
-                    on i.consultants_id = consultants.id 
-                    LEFT JOIN convocations s
-                    on s.id = i.convocations_id
-                WHERE IFNULL(i.convocations_id,'X') IN ('".$convocationid."','X')";
+                FROM consultants
+                LEFT JOIN convocations s
+                    on s.nti_id = consultants.id
+                WHERE IFNULL(s.id,'X') IN ('".$convocationid."','X')";
 
         //set parameters 
         //you may set as many parameters as you have on your query
@@ -51,11 +49,11 @@ class ConvocationsRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative(PDO::FETCH_ASSOC);
     }
 
-    public function NbrPersInvit($convocationid)
+    public function NbrPersConvoc($convocationid)
     {
-        $sql = "SELECT  count(i.consultants_id) as nbrpersinvites
-                FROM    convocations_consultants i
-                WHERE IFNULL(i.convocations_id,'X') IN ('".$convocationid."','X')";
+        $sql = "SELECT  count(nti_id) as nbrpersconvoquees
+                FROM    convocations
+                WHERE IFNULL(id,'X') IN ('".$convocationid."','X')";
 
         // $params['color'] = 'blue';
         $entityManager = $this->getEntityManager();

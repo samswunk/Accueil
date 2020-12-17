@@ -33,20 +33,20 @@ class ConvocationsController extends AbstractController
     public function convocationDetail(ConvocationsRepository $convocationsRepository,$idconvo): Response
     {
         $convo = $convocationsRepository->findAllBySqlBy($idconvo);
-        $nbrconvo = $convocationsRepository->NbrPersInvit($idconvo);
+        $nbrconvo = $convocationsRepository->NbrPersConvoc($idconvo);
         
         return $this->render('convocations/detail.html.twig', [
             'convocations'   => $convo,
             'idconvo'       => $idconvo,
             'date'          => $convo[0]['dateconvocation'],
-            'nbrconvo'    => $nbrconvo[0]['nbrpersinvites']
+            'nbrconvo'    => $nbrconvo[0]['nbrpersconvoquees']
         ]);
     }
 
     /**
     * @Route("/invitnbrmax/{idconvo}/{ajout}", name="modif_nbrmax_convocation", methods={"GET"})
     */
-    public function modifNbrmaxInvitation(ConvocationsRepository $convocationsRepository,$idconvo,$ajout): Response
+    public function modifNbrmaxConvocation(ConvocationsRepository $convocationsRepository,$idconvo,$ajout): Response
     {
         $invi   = $convocationsRepository->find($idconvo);
         $entityManager = $this->getDoctrine()->getManager();
@@ -69,19 +69,19 @@ class ConvocationsController extends AbstractController
         $entityManager->flush();
         
         $convo  = $convocationsRepository->findAllBySqlBy($idconvo);
-        $nbrconvo = $convocationsRepository->NbrPersInvit($idconvo);
+        $nbrconvo = $convocationsRepository->NbrPersConvoc($idconvo);
         return $this->render('convocations/detail.html.twig', [
             'convocations'   => $convo,
             'idconvo'       => $idconvo,
             'date'          => $convo[0]['dateconvocation'],
-            'nbrconvo'    => $nbrconvo[0]['nbrpersinvites']
+            'nbrconvo'    => $nbrconvo[0]['nbrpersconvoquees']
         ]);
     }
 
     /**
     * @Route("/invit/{id}/{idconvo}/{convoquer}", name="convoquer_pers", methods={"GET"})
     */
-    public function convoquerPersonne(ConvocationsRepository $convocationsRepository,$id,$idconvo,$convoer): Response
+    public function convoquerPersonne(ConvocationsRepository $convocationsRepository,$id,$idconvo,$convoquer): Response
     {
         $invi   = $convocationsRepository->find($idconvo);
         $entityManager = $this->getDoctrine()->getManager();
@@ -91,23 +91,23 @@ class ConvocationsController extends AbstractController
         ->find($id);
         // dd('id:', $id,'idconvo:',$idconvo,'consultant:',$consultant,'invi:',$invi);
         
-        if($convoer) {
-            $consultant->addInvitation($invi);
+        if($convoquer) {
+            $invi->setNti($consultant);
         }
         else {
-            $consultant->removeInvitation($invi);
+            $invi->setNti(null);
         }
-        $entityManager->persist($consultant);
+        $entityManager->persist($invi);
         $entityManager->flush();
         
         $convo  = $convocationsRepository->findAllBySqlBy($idconvo);
-        $nbrconvo = $convocationsRepository->NbrPersInvit($idconvo);
+        $nbrconvo = $convocationsRepository->NbrPersConvoc($idconvo);
         
         return $this->render('convocations/detail.html.twig', [
             'convocations'   => $convo,
             'idconvo'       => $idconvo,
             'date'          => $convo[0]['dateconvocation'],
-            'nbrconvo'    => $nbrconvo[0]['nbrpersinvites']
+            'nbrconvo'    => $nbrconvo[0]['nbrpersconvoquees']
         ]);
     }
 
@@ -124,23 +124,25 @@ class ConvocationsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($convocation);
             $entityManager->flush();
-
+            
             return $this->redirectToRoute('convocations_index');
         }
 
         return $this->render('convocations/new.html.twig', [
             'convocation' => $convocation,
             'form' => $form->createView(),
+            'idconvo'=>$convocation->getId()
         ]);
     }
 
     /**
-     * @Route("/{id}", name="convocations_show", methods={"GET"})
+     * @Route("/{idconvo}", name="convocations_show", methods={"GET"})
      */
     public function show(Convocations $convocation): Response
     {
         return $this->render('convocations/show.html.twig', [
-            'convocation' => $convocation,
+            'convocation'   => $convocation,
+            'idconvo'       => $convocation->getId()
         ]);
     }
 
@@ -161,13 +163,13 @@ class ConvocationsController extends AbstractController
             if ($this->isCsrfTokenValid('edit', $submittedToken)) {
                 $idconvo = $id;
                 $convo  = $convocationsRepository->findAllBySqlBy($idconvo);
-                $nbrconvo = $convocationsRepository->NbrPersInvit($idconvo);
-                // dd($request,$form->isValid(),$submittedToken,$this->isCsrfTokenValid('edit', $submittedToken));
+                $nbrconvo = $convocationsRepository->NbrPersConvoc($idconvo);
+                // dd($convo,$idconvo,$submittedToken,$nbrconvo[0]['nbrpersconvoquees']);
                 return $this->render('convocations/detail.html.twig', [
                     'convocations'   => $convo,
                     'idconvo'       => $idconvo,
-                    'date'          => $convo[0]['dateconvocation'],
-                    'nbrconvoces'    => $nbrconvo[0]['nbrpersconvoces']
+                    'date'          => $convocation->getDateconvocation(),
+                    'nbrconvo'      => $nbrconvo[0]['nbrpersconvoquees']
                 ]);
             }
             else {
@@ -177,12 +179,13 @@ class ConvocationsController extends AbstractController
 
         return $this->render('convocations/edit.html.twig', [
             'convocation' => $convocation,
+            'idconvo' => $convocation->getId(),
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="convocations_delete", methods={"DELETE"})
+     * @Route("/{idconvo}", name="convocations_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Convocations $convocation): Response
     {

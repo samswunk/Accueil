@@ -21,10 +21,9 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('convocations_index') }}" class="btn btn-sm btn-secondary"><i class="fas fa-backspace"></i></a>
-
-    <a href="{{ path('convocations_edit', {'id': convocation.id}) }}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-
-    {{ include('convocations/_delete_form.html.twig') }}
+    <div class="col-12 form-row mt-2">
+        <a href="{{ path('convocations_index') }}" class="offset-6 btn-lg btn-dark fas fa-backspace"></a>
+        <a href="{{ path('convocations_edit', {'id': convocation.id}) }}" class="btn-lg btn-success fas fa-edit"></a>
+        {{ include('convocations/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

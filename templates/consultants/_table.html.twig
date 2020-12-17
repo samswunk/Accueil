@@ -24,8 +24,8 @@
             <td>{{ consultant.nbrpersonnes }}</td>
             <td>{{ consultant.dateconvocation }}</td>
             <td>
-                <a href="{{ path('consultants_show', {'id': consultant.id}) }}" class="btn btn-sm btn-secondary"><i class="fas fa-eye"></i></a>
-                <a href="{{ path('consultants_edit', {'id': consultant.id}) }}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+                <a href="{{ path('consultants_show', {'id': consultant.id}) }}" class="btn-sm btn-secondary fas fa-eye"></a>
+                <a href="{{ path('consultants_edit', {'id': consultant.id}) }}" class="btn-sm btn-success fas fa-edit"></a>
             </td>
         </tr>
     {% else %}

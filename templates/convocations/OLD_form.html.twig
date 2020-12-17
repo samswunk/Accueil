@@ -1,0 +1,14 @@
+{{ form_start(form) }}
+<div class="row col-12">
+    <div class="col-3 offset-1">
+        {{ form_row(form.dateconvocation,{'attr':{'class':'form-control datetimepicker'}}) }}
+    </div>
+    <div class="col-3">
+        {{ form_row(form.nbrpersonnes,{'attr':{'class':'form-control'},'label':'Nbr de Personnes Max'}) }}
+    </div>
+    <div class="col-12 mt-2">
+        <a href="{{ path('convocations_index') }}" class="offset-6 btn-lg btn-dark fas fa-backspace"></a>
+        <button class="btn-lg btn-success fas fa-save ml-2"></button>
+    </div>
+</div>
+{{ form_end(form) }}

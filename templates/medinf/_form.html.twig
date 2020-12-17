@@ -25,7 +25,7 @@
     </div>
     <div class="col-12 form-group">
         <a href="{{ path('medinf_index') }}" class="btn btn-sm btn-dark offset-4"><i class="fas fa-arrow-circle-left"></i></a>
-        <button class="btn btn-sm btn-success"><i class="far fa-save"></i></button>
+        <button class="btn-lg btn-success"><i class="far fa-save"></i></button>
         {% if form.vars.value.id %}
             {{ include('medinf/_delete_form.html.twig') }}
         {% endif %}

@@ -1,28 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Convocations index{% endblock %}
+{% block title %}Liste des convocations{% endblock %}
 
 {% block body %}
-    <h1>Convocations index</h1>
-
+    <h1 class=" mb-4">Liste des convocations</h1>
+    
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Nbrpersonnes</th>
-                <th>Dateconvocation</th>
+                <th>Date</th>
+                <th>Nbr de personnes</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for convocation in convocations %}
+            {% for convocation in convocations %}
             <tr>
                 <td>{{ convocation.id }}</td>
-                <td>{{ convocation.nbrpersonnes }}</td>
                 <td>{{ convocation.dateconvocation ? convocation.dateconvocation|date('Y-m-d') : '' }}</td>
+                <td>{{ convocation.nbrpersonnes }}</td>
                 <td>
-                    <a href="{{ path('convocations_show', {'id': convocation.id}) }}" class="btn btn-sm btn-secondary"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('convocations_edit', {'id': convocation.id}) }}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('convocations_show', {'idconvo': convocation.id}) }}"   class="btn-sm btn-primary fas fa-eye rounded"></a>
+                    <a href="{{ path('convocations_edit', {'idconvo': convocation.id}) }}"   class="btn-sm btn-success fas fa-edit ml-1"></a>
+                    <a href="{{ path('convocations_detail', {'idconvo': convocation.id}) }}" class="btn-sm btn-success fas fa-list ml-1"></a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +34,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('convocations_new') }}">Create new</a>
+    <a href="{{ path('convocations_new') }}">Nouvelle convocation</a>
 {% endblock %}

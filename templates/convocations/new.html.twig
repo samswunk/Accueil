@@ -3,9 +3,8 @@
 {% block title %}New Convocations{% endblock %}
 
 {% block body %}
-    <h1>Create new Convocations</h1>
-
+<h1>Créer Convocations</h1>
+<div class="container">
     {{ include('convocations/_form.html.twig') }}
-
-    <a href="{{ path('convocations_index') }}" class="btn btn-sm btn-secondary"><i class="fas fa-backspace"></i></a>
+</div>
 {% endblock %}

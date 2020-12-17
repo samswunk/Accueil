@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
@@ -18,14 +19,22 @@ class ConvocationsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nbrpersonnes')
+            ->add('nbrpersonnes', NumberType::class, array
+            (
+                'required' => true,
+                'attr' => 
+                    [
+                        'class' => 'form-control',
+                    ],
+                'label'=>'Nbr de personnes convoquées'                        
+            ))
             ->add('dateconvocation', DateTimeType::class, array
                     (
                         'widget'=> 'single_text',
                         'required' => true,
                         'attr' => 
                             [
-                                'class' => 'form-control input-inline datetimepicker',
+                                'class' => 'form-control datetimepicker',
                                 'data-provide' => 'datetimepicker',
                                 'format'=> 'dd/MM/yyyy HH:mm',
                                 'input' => 'string',
@@ -36,6 +45,7 @@ class ConvocationsType extends AbstractType
                         'label'=>'Date de convocation'                        
                     )
                 )
+            
             // ->add('nti', EntityType::class, [
             //     'class'         => Consultants::class,
             //     'choice_label'  => 'nom',
@@ -49,33 +59,34 @@ class ConvocationsType extends AbstractType
             //     // uses the User.username property as the visible option string
             //     'choice_label' => function ($user) 
             //                       {
-            //                                 return json_encode([$user->getNom(),$user->getPrenom(),$user->getSexe(),$user->getNumSecu()]); 
+            //                                 return $user->getNom()." ".$user->getPrenom()." ".($user->getSexe()==1 ? 'H' : 'F')." (".$user->getNumSecu().")"; 
             //                         },
             //     'attr' => 
             //         [
-            //             'class' => 'form-control',
+            //             'class' => 'form-control select',
+            //             // 'checked'   => 'checked'
             //         ],
             //     // used to render a select box, check boxes or radios
-            //     'multiple' => false,
-            //     'expanded' => true
+            //     'multiple' => true,
+            //     'expanded' => false
             // ])
-            ->add('nti')    
-                ->addModelTransformer(new CallbackTransformer(
-                function ($tagsAsArray) {
-                    // transform the array to a string
-                    // dd($tagsAsArray);
-                    return $tagsAsArray;
-                    /*return ([   ['id',$tagsAsArray->getId()],
-                                ['NbrPersonnes',$tagsAsArray->getNbrPersonnes()],
-                                ['dateconvocation',$tagsAsArray->getDateConvocation()],
-                                ['nti',$tagsAsArray->getNti()]
-                            ]);/**/
-                },
-                function ($tagsAsString) {
-                    // transform the string back to an array
-                    return explode(', ', $tagsAsString);
-                }
-            ))
+            // ->add('nti')    
+            //     ->addModelTransformer(new CallbackTransformer(
+            //     function ($tagsAsArray) {
+            //         // transform the array to a string
+            //         // dd($tagsAsArray);
+            //         return $tagsAsArray;
+            //         /*return ([   ['id',$tagsAsArray->getId()],
+            //                     ['NbrPersonnes',$tagsAsArray->getNbrPersonnes()],
+            //                     ['dateconvocation',$tagsAsArray->getDateConvocation()],
+            //                     ['nti',$tagsAsArray->getNti()]
+            //                 ]);/**/
+            //     },
+            //     function ($tagsAsString) {
+            //         // transform the string back to an array
+            //         return explode(', ', $tagsAsString);
+            //     }
+            // ))
         ;
     }
 
