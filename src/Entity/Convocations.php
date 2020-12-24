@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ConvocationsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,9 +30,19 @@ class Convocations
     private $dateconvocation;
 
     /**
-     * @ORM\OneToOne(targetEntity=Consultants::class, inversedBy="convo", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Consultants::class, mappedBy="convocations")
      */
     private $nti;
+
+    public function __construct()
+    {
+        $this->nti = new ArrayCollection();
+    }
+
+    // /**
+    //  * @ORM\OneToOne(targetEntity=Consultants::class, inversedBy="convo", cascade={"persist", "remove"})
+    //  */
+    // private $nti;
 
     public function getId(): ?int
     {
@@ -61,14 +73,44 @@ class Convocations
         return $this;
     }
 
-    public function getNti(): ?Consultants
+    // public function getNti(): ?Consultants
+    // {
+    //     return $this->nti;
+    // }
+
+    // public function setNti(?Consultants $nti): self
+    // {
+    //     $this->nti = $nti;
+
+    //     return $this;
+    // }
+
+    /**
+     * @return Collection|Consultants[]
+     */
+    public function getNti(): Collection
     {
         return $this->nti;
     }
 
-    public function setNti(?Consultants $nti): self
+    public function addNti(Consultants $nti): self
     {
-        $this->nti = $nti;
+        if (!$this->nti->contains($nti)) {
+            $this->nti[] = $nti;
+            $nti->setConvocations($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNti(Consultants $nti): self
+    {
+        if ($this->nti->removeElement($nti)) {
+            // set the owning side to null (unless already changed)
+            if ($nti->getConvocations() === $this) {
+                $nti->setConvocations(null);
+            }
+        }
 
         return $this;
     }

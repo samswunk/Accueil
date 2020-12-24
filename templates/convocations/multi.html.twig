@@ -9,7 +9,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="Convocations" class="col-12 row" action="{{ path('convocations_edit',{'id':idconvo}) }}" method="POST">
+                <form id="Convocations" class="col-12 row" action="{{ path('convocations_edit',{'idconvo':idconvo}) }}" method="POST">
                     <input type="hidden" name="convocations[idconvo]" id="idconvo" value="{{ idconvo }}">
                     <div class="m-0 p-0 row col-12" id="divContenu">
                     <div class="row col-12">

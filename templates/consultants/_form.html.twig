@@ -1,7 +1,7 @@
 {{ form_start(form) }}
-    {{ form_widget(form, {'class': 'form-inline row'}) }}
-    <div class="col-12 form-row mt-2">
+    {{ form_widget(form) }}
+    <div class="col-12 mt-2">
         <a href="{{ path('consultants_index') }}" class="btn-lg btn-secondary fas fa-backspace"></a>
-        <button class="btn-danger btn-lg fas fa-trash"></button>
+        <button class="btn-danger btn-lg fas fa-trash ml-3"></button>
     </div>
 {{ form_end(form) }}

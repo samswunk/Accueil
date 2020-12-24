@@ -3,6 +3,7 @@
 {% block title %}Consultants{% endblock %}
 
 {% block body %}
+<div class="form-group">
     <h1>Consultants</h1>
 
     <table class="table">
@@ -16,7 +17,7 @@
                 <td>{{ consultant.nom }}</td>
             </tr>
             <tr>
-                <th>Prenom</th>
+                <th>Prénom</th>
                 <td>{{ consultant.prenom }}</td>
             </tr>
             <tr>
@@ -29,7 +30,7 @@
             </tr>
             <tr>
                 <th>Ddn</th>
-                <td>{{ consultant.ddn ? consultant.ddn|date('Y-m-d') : '' }}</td>
+                <td>{{ consultant.ddn ? consultant.ddn|date('d/m/Y') : '' }}</td>
             </tr>
         </tbody>
     </table>
@@ -39,5 +40,5 @@
         <a href="{{ path('consultants_edit', {'id': consultant.id}) }}" class="btn-lg btn-success fas fa-edit"></a>
         {{ include('consultants/_delete_form.html.twig') }}
     </div>
-
+</div>
 {% endblock %}

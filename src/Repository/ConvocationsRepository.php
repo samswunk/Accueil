@@ -35,7 +35,7 @@ class ConvocationsRepository extends ServiceEntityRepository
                         s.nbrpersonnes, s.dateconvocation
                 FROM consultants
                 LEFT JOIN convocations s
-                    on s.nti_id = consultants.id
+                    on s.id = consultants.convocations_id
                 WHERE IFNULL(s.id,'X') IN ('".$convocationid."','X')";
 
         //set parameters 
@@ -51,9 +51,9 @@ class ConvocationsRepository extends ServiceEntityRepository
 
     public function NbrPersConvoc($convocationid)
     {
-        $sql = "SELECT  count(nti_id) as nbrpersconvoquees
-                FROM    convocations
-                WHERE IFNULL(id,'X') IN ('".$convocationid."','X')";
+        $sql = "SELECT  count(id) as nbrpersconvoquees
+                FROM    consultants
+                WHERE IFNULL(convocations_id,'X') = '".$convocationid."'";
 
         // $params['color'] = 'blue';
         $entityManager = $this->getEntityManager();

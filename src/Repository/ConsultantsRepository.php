@@ -42,7 +42,7 @@ class ConsultantsRepository extends ServiceEntityRepository
                         ddn, Convocations.nbrpersonnes, convocations.dateconvocation
                 FROM    Consultants
                 LEFT JOIN Convocations
-                ON      Consultants.id = Convocations.nti_id";
+                ON      Consultants.convocations_id = Convocations.id";
 
         //set parameters 
         //you may set as many parameters as you have on your query

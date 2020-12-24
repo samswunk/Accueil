@@ -55,14 +55,14 @@ class Consultants
     private $parent;
 
     /**
-     * @ORM\OneToOne(targetEntity=Convocations::class, mappedBy="nti", cascade={"persist", "remove"})
-     */
-    private $convo;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Invitations::class, mappedBy="nti")
      */
     private $invitations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Convocations::class, inversedBy="nti")
+     */
+    private $convocations;
 
     public function __construct()
     {
@@ -176,25 +176,6 @@ class Consultants
 
         return $this;
     }
-
-    public function getConvo(): ?Convocations
-    {
-        return $this->convo;
-    }
-
-    public function setConvo(?Convocations $convo): self
-    {
-        $this->convo = $convo;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newNti = null === $convo ? null : $this;
-        if ($convo->getNti() !== $newNti) {
-            $convo->setNti($newNti);
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Invitations[]
      */
@@ -218,6 +199,18 @@ class Consultants
         if ($this->invitations->removeElement($invitation)) {
             $invitation->removeNti($this);
         }
+
+        return $this;
+    }
+
+    public function getConvocations(): ?Convocations
+    {
+        return $this->convocations;
+    }
+
+    public function setConvocations(?Convocations $convocations): self
+    {
+        $this->convocations = $convocations;
 
         return $this;
     }

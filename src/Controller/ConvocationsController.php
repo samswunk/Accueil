@@ -32,14 +32,15 @@ class ConvocationsController extends AbstractController
      */
     public function convocationDetail(ConvocationsRepository $convocationsRepository,$idconvo): Response
     {
-        $convo = $convocationsRepository->findAllBySqlBy($idconvo);
+        $convocations = $convocationsRepository->findAllBySqlBy($idconvo);
+        $convo = $convocationsRepository->find($idconvo);
         $nbrconvo = $convocationsRepository->NbrPersConvoc($idconvo);
-        
+        // dd($convo,$idconvo,$convo->getDateconvocation());
         return $this->render('convocations/detail.html.twig', [
-            'convocations'   => $convo,
-            'idconvo'       => $idconvo,
-            'date'          => $convo[0]['dateconvocation'],
-            'nbrconvo'    => $nbrconvo[0]['nbrpersconvoquees']
+            'convocations'      => $convocations,
+            'idconvo'           => $idconvo,
+            'date'              => $convo->getDateconvocation(),
+            'nbrconvo'          => $nbrconvo[0]['nbrpersconvoquees']
         ]);
     }
 
@@ -48,24 +49,24 @@ class ConvocationsController extends AbstractController
     */
     public function modifNbrmaxConvocation(ConvocationsRepository $convocationsRepository,$idconvo,$ajout): Response
     {
-        $invi   = $convocationsRepository->find($idconvo);
+        $convo   = $convocationsRepository->find($idconvo);
         $entityManager = $this->getDoctrine()->getManager();
         
-        // dd('id:', $id,'idconvo:',$idconvo,'consultant:',$consultant,'invi:',$invi);
-        $nbrActuel=$invi->getNbrpersonnes();
+        // dd('id:', $id,'idconvo:',$idconvo,'consultant:',$consultant,'invi:',$convo);
+        $nbrActuel=$convo->getNbrpersonnes();
 
         if($ajout) 
         {
-            $invi->setNbrpersonnes($nbrActuel+1);
+            $convo->setNbrpersonnes($nbrActuel+1);
         }
         else 
         {
             if ($nbrActuel>0)
                 {
-                    $invi->setNbrpersonnes($nbrActuel-1);
+                    $convo->setNbrpersonnes($nbrActuel-1);
                 }
         }
-        $entityManager->persist($invi);
+        $entityManager->persist($convo);
         $entityManager->flush();
         
         $convo  = $convocationsRepository->findAllBySqlBy($idconvo);
@@ -74,7 +75,7 @@ class ConvocationsController extends AbstractController
             'convocations'   => $convo,
             'idconvo'       => $idconvo,
             'date'          => $convo[0]['dateconvocation'],
-            'nbrconvo'    => $nbrconvo[0]['nbrpersconvoquees']
+            'nbrconvo'      => $nbrconvo[0]['nbrpersconvoquees']
         ]);
     }
 
@@ -83,21 +84,21 @@ class ConvocationsController extends AbstractController
     */
     public function convoquerPersonne(ConvocationsRepository $convocationsRepository,$id,$idconvo,$convoquer): Response
     {
-        $invi   = $convocationsRepository->find($idconvo);
+        $convo   = $convocationsRepository->find($idconvo);
         $entityManager = $this->getDoctrine()->getManager();
         
         $consultant = $this->getDoctrine()
         ->getRepository(Consultants::class, 'default')
         ->find($id);
-        // dd('id:', $id,'idconvo:',$idconvo,'consultant:',$consultant,'invi:',$invi);
+        // dd('id:', $id,'idconvo:',$idconvo,'consultant:',$consultant,'convo:',$convo);
         
         if($convoquer) {
-            $invi->setNti($consultant);
+            $consultant->setConvocations($convo);
         }
         else {
-            $invi->setNti(null);
+            $consultant->setConvocations(null);
         }
-        $entityManager->persist($invi);
+        $entityManager->persist($convo);
         $entityManager->flush();
         
         $convo  = $convocationsRepository->findAllBySqlBy($idconvo);
@@ -147,9 +148,9 @@ class ConvocationsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="convocations_edit", methods={"GET","POST"})
+     * @Route("/{idconvo}/edit", name="convocations_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Convocations $convocation, ConvocationsRepository $convocationsRepository,$id): Response
+    public function edit(Request $request, Convocations $convocation, ConvocationsRepository $convocationsRepository,$idconvo): Response
     {
         $form = $this->createForm(ConvocationsType::class, $convocation);
         $form->handleRequest($request);
@@ -161,10 +162,9 @@ class ConvocationsController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             
             if ($this->isCsrfTokenValid('edit', $submittedToken)) {
-                $idconvo = $id;
+                $idconvo = $idconvo;
                 $convo  = $convocationsRepository->findAllBySqlBy($idconvo);
                 $nbrconvo = $convocationsRepository->NbrPersConvoc($idconvo);
-                // dd($convo,$idconvo,$submittedToken,$nbrconvo[0]['nbrpersconvoquees']);
                 return $this->render('convocations/detail.html.twig', [
                     'convocations'   => $convo,
                     'idconvo'       => $idconvo,
@@ -178,9 +178,10 @@ class ConvocationsController extends AbstractController
         }
 
         return $this->render('convocations/edit.html.twig', [
-            'convocation' => $convocation,
-            'idconvo' => $convocation->getId(),
-            'form' => $form->createView(),
+            'convocation'   => $convocation,
+            'idconvo'       => $convocation->getId(),
+            'date'          => $convocation->getDateconvocation(),
+            'form'          => $form->createView(),
         ]);
     }
 
