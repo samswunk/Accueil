@@ -7,11 +7,13 @@ use App\Entity\Convocations;
 use App\Form\Transformer\DateToStringTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormInterface;
 
 class ConsultantsType extends AbstractType
 {
@@ -61,24 +63,26 @@ class ConsultantsType extends AbstractType
                         'class' => 'form-control datetimepicker'
                     ]
             ])
-            // ->add('parent', CollectionType::class)
-            // ->add('enfant')
             ->add('convocations',EntityType::class, [
                 // 'mapped' => false,
                 'class' => Convocations::class,
                 'choice_label' => function ($convocations) 
-                        { return $convocations->getDateconvocation()->format('d/m/Y H:i'); 
+                        { 
+                            return $convocations->getDateconvocation()->format('d/m/Y H:i'); 
                             },
-                'label'         => 'Convocation : ',
+                'label'         => 'Convoqué.e le : ',
                 'attr' => 
                     [
-                        'class' => 'form-control datetimepicker'
+                        'class' => 'form-control datepicker'
                     ]
             ])
             // ->addModelTransformer($this->transformer)
-            // ->add('convocations',EntityType::class, [
-            //     'class'         => Convocations::class,
-            //     'choice_label'  => 'dateconvocation',
+            // ->add('parents',EntityType::class, [
+            //     'class'         => Consultants::class,
+            //     'choice_label'  => function ($consultants) 
+            //         { 
+            //             return $consultants->getPrenom() .' '. $consultants->getNom() .' '. $consultants->getNumSecu(); 
+            //         },
             //     'label'         => false,
             //     'multiple'      => false,
             //     'attr' => 
@@ -86,18 +90,24 @@ class ConsultantsType extends AbstractType
             //             'class' => 'form-control'
             //         ]
             // ])
-            ->add('enfant',EntityType::class, [
-                'class'         => Consultants::class,
-                'choice_label' => function ($consultants) 
-                    { return $consultants->getNom()." " . $consultants->getPrenom(); 
-                        },
-                'label'         => 'Enfant(s)',
-                'multiple'      => false,
-                'attr' => 
-                    [
-                        'class' => 'form-control'
-                    ]
-            ])
+            // ->add('parents',CollectionType::class, [
+            //     'entry_type' => ConsultantsType::class,
+            //     'entry_options' => ['label' => 'Parents'],
+            //     // 'allow_add' => true,
+            //     // 'allow_delete'  => true,
+            //     // 'prototype'     => true,
+            //     // 'required'      => false,
+            //     // 'delete_empty'  => true,
+            // ])
+            // ->add('enfants',EntityType::class, [
+            //     'class' => Consultants::class,
+            //     'choice_label'  => function ($consultants) 
+            //         { 
+            //             return $consultants->getPrenom() .' '. $consultants->getNom() .' '. $consultants->getNumSecu(); 
+            //         },
+            //     'expanded' => true,
+            //     'multiple' => true,
+            // ])
         ;
     }
 

@@ -1,0 +1,34 @@
+{# SHOW Consultants MODAL #}
+<div    class="collapse" 
+        aria-labelledby="headingOne"
+        style="height: 90%; min-width: 80%;"
+        data-spy="scroll" 
+        id="ShowConsultants">
+    <div class="card card-body">      
+        <h4 id="Consultants_titreShowConsultants" class="modal-titlecenter">Consultant</h4>
+        <div class="container">
+            <table class="table display">
+                <thead> 
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prenom</th>
+                        <th>Numsecu</th>
+                        <th>Sexe</th>
+                        <th>Ddn</th>
+                        <th>Nbr</th>
+                        <th>Date Convo</th>
+                        {# <th>actions</th> #}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="8">no records found</td>
+                    </tr>
+                </tbody>
+            </table>
+            {# {{ include('consultants/_table.html.twig') }} #}
+        </div>
+    </div>
+</div>
+{# END Consultants MODAL #}

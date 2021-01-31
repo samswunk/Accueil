@@ -23,10 +23,9 @@ class ConvocationsController extends AbstractController
     public function index(ConvocationsRepository $convocationsRepository): Response
     {
         return $this->render('convocations/index.html.twig', [
-            'convocations' => $convocationsRepository->findAll(),
+            'convocations' => $convocationsRepository->findAllConvosBySql(),
         ]);
     }
-
     /**
      * @Route("/detail/{idconvo}", name="convocations_detail", methods={"GET"})
      */

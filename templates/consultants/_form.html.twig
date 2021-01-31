@@ -1,7 +1,51 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <div class="col-12 mt-2">
-        <a href="{{ path('consultants_index') }}" class="btn-lg btn-secondary fas fa-backspace"></a>
-        <button class="btn-danger btn-lg fas fa-trash ml-3"></button>
+    {# {{ dump(form.vars.value.enfant) }} #}
+    {# {{ form_widget(form) }} #}
+    <div class="col-12">
+        {{ form_row(form.nom,{'attr':{'class':'form-control'}}) }}
+        {{ form_row(form.prenom,{'attr':{'class':'form-control'}}) }}
+        {{ form_row(form.numsecu,{'attr':{'class':'form-control'}}) }}
+        <div class="form-inline">
+            {{ form_row(form.ddn,{'attr':{'class':'form-control datetimepicker','size':6}}) }}
+            <label for="consultants_sexe" class="col-2">Sexe</label>
+            <select id="consultants_sexe" name="consultants[sexe]" required="required" class="form-control select-item col-1">
+                <option>-- selectionnez le sexe --</option>
+                <option value="1" {% if form.sexe.vars.value == 1 %} selected {% endif %}>M</option>
+                <option value="2" {% if form.sexe.vars.value == 2 %} selected {% endif %}>F</option>
+            </select>
+        </div>    
+        {{ form_row(form.convocations,{'attr':{'class':'form-control'}}) }}
+        <a href="#" class="btn btn-link" data-toggle="collapse" data-target="#ShowConsultants" aria-expanded="false" aria-controls="collapseOne" data-type="parents">
+            <h1>Parents</h1>
+        </a>
+        <a href="#" class="btn btn-link" data-toggle="collapse" data-target="#ShowConsultants" aria-expanded="false" aria-controls="collapseTwo" data-type="enfants">
+            <h1>Enfants</h1>
+        </a>
+        {{ include('consultants/multi.html.twig') }}
+        
+        {# {{ form_row(form.parents,{'attr':{'class':'form-control'}}) }}
+        {{ form_row(form.enfants,{'attr':{'class':'form-control'}}) }} #}
+        {# <div class="col-12">
+            <h3>Parents : </h3>
+            <div class="form-inline col-12">
+                <div class="col-1">
+                    {% if form.vars.value.parent.sexe == 1 %}
+                        Père :
+                    {% else %}
+                        Mère :
+                    {% endif %}
+                </div>
+                <div class="col-1" id="consultants_enfant" name="consultants[enfant]">{{ form.vars.value.parent.id}}</div>
+                <div class="col-3">{{form.vars.value.parent.nom}}</div>
+                <div class="col-3">{{form.vars.value.parent.prenom}}</div>
+                <div class="col-3">{{form.vars.value.parent.numsecu }}</div>
+                <div class="col-1">{% if form.vars.value.parent.sexe == 1 %}M{% else %}F{% endif %}</div>
+            </div>
+        </div> #}
+
+        <div class="col-12 mt-2">
+            <a href="{{ path('consultants_index') }}" class="btn-lg btn-secondary fas fa-backspace"></a>
+            <button class="btn-lg btn-success far fa-save ml-2"></button>
+        </div>
     </div>
-{{ form_end(form) }}
+{{ form_end(form, {'render_rest': false}) }}

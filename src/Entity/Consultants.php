@@ -45,16 +45,6 @@ class Consultants
     private $ddn;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Consultants::class, inversedBy="parent")
-     */
-    private $enfant;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Consultants::class, mappedBy="enfant")
-     */
-    private $parent;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Invitations::class, mappedBy="nti")
      */
     private $invitations;
@@ -64,10 +54,31 @@ class Consultants
      */
     private $convocations;
 
+    // /**
+    //  * @ORM\ManyToMany(targetEntity=Consultants::class, inversedBy="enfants")
+    //  */
+    // private $parents;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Consultants::class, mappedBy="parents", orphanRemoval=true)
+     */
+    private $enfants;
+
+    /**
+     * Many Users have many Users.
+     * @ORM\ManyToMany(targetEntity=Consultants::class, inversedBy="enfants", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinTable(name="consultants_consultants",
+     *      joinColumns={@ORM\JoinColumn(name="consultants_source", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="consultants_target", referencedColumnName="id")}
+     *      )
+     */
+    private $parents;
+
     public function __construct()
     {
-        $this->parent = new ArrayCollection();
         $this->invitations = new ArrayCollection();
+        $this->parents = new ArrayCollection();
+        $this->enfants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,35 +159,6 @@ class Consultants
     }
 
     /**
-     * @return Collection|self[]
-     */
-    public function getParent(): Collection
-    {
-        return $this->parent;
-    }
-
-    public function addParent(self $parent): self
-    {
-        if (!$this->parent->contains($parent)) {
-            $this->parent[] = $parent;
-            $parent->setEnfant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParent(self $parent): self
-    {
-        if ($this->parent->removeElement($parent)) {
-            // set the owning side to null (unless already changed)
-            if ($parent->getEnfant() === $this) {
-                $parent->setEnfant(null);
-            }
-        }
-
-        return $this;
-    }
-    /**
      * @return Collection|Invitations[]
      */
     public function getInvitations(): Collection
@@ -214,4 +196,56 @@ class Consultants
 
         return $this;
     }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getParents(): Collection
+    {
+        return $this->parents;
+    }
+
+    public function addParent(self $parent): self
+    {
+        if (!$this->parents->contains($parent)) {
+            $this->parents[] = $parent;
+        }
+
+        return $this;
+    }
+
+    public function removeParent(self $parent): self
+    {
+        $this->parents->removeElement($parent);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getEnfants(): Collection
+    {
+        return $this->enfants;
+    }
+
+    public function addEnfant(self $enfant): self
+    {
+        if (!$this->enfants->contains($enfant)) {
+            $this->enfants[] = $enfant;
+            $enfant->addParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnfant(self $enfant): self
+    {
+        if ($this->enfants->removeElement($enfant)) {
+            $enfant->removeParent($this);
+        }
+
+        return $this;
+    }
+
 }

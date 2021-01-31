@@ -13,25 +13,25 @@
         </tr>
     </thead>
     <tbody>
-    {% for consultant in consultants %}
+    {# {% for consultant in consultants %}
         <tr>
             <td>{{ consultant.id }}</td>
-            <td>{{ consultant.nom }}</td>
+            <td>{{ consultant.nom|upper }}</td>
             <td>{{ consultant.prenom }}</td>
             <td>{{ consultant.numsecu }}</td>
             <td>{{ consultant.sexe }}</td>
-            <td>{{ consultant.ddn ? consultant.ddn|date('Y-m-d') : '' }}</td>
+            <td>{{ consultant.ddn ? consultant.ddn|date('d/m/Y') : '' }}</td>
             <td>{{ consultant.nbrpersonnes }}</td>
-            <td>{{ consultant.dateconvocation }}</td>
+            <td>{{ consultant.dateconvocation ? consultant.dateconvocation|date('d/m/Y H:i') : '' }}</td>
             <td>
                 <a href="{{ path('consultants_show', {'id': consultant.id}) }}" class="btn-sm btn-secondary fas fa-eye"></a>
                 <a href="{{ path('consultants_edit', {'id': consultant.id}) }}" class="btn-sm btn-success fas fa-edit"></a>
             </td>
         </tr>
-    {% else %}
+    {% else %} #}
         <tr>
-            <td colspan="7">no records found</td>
+            <td colspan="9">no records found</td>
         </tr>
-    {% endfor %}
+    {# {% endfor %} #}
     </tbody>
 </table>

@@ -20,6 +20,19 @@ class ConvocationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Convocations::class);
     }
 
+    public function findAllConvosBySql()
+    {
+        $sql = "SELECT  s.id,
+		                (select count(*) from consultants WHERE consultants.convocations_id = s.id) as nbrconvoques,
+    	                s.nbrpersonnes, s.dateconvocation
+                FROM convocations s";
+
+        $entityManager = $this->getEntityManager();
+        $stmt = $entityManager->getConnection()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAllAssociative(PDO::FETCH_ASSOC);
+    }
+
     public function findAllBySqlBy($convocationid)
     {
         $sql = "SELECT  s.id as idconvo,

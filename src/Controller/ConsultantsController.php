@@ -6,9 +6,11 @@ use App\Entity\Consultants;
 use App\Form\ConsultantsType;
 use App\Repository\ConsultantsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Json;
 
 /**
  * @Route("/consultants")
@@ -24,15 +26,34 @@ class ConsultantsController extends AbstractController
     //         'consultants' => $consultantsRepository->findAll(),
     //     ]);
     // }
-
+    
     /**
-     * @Route("/", name="consultants_index", methods={"GET"})
+     * @Route("/", name="consultants_index", methods={"GET","POST"})
      */
     public function index(ConsultantsRepository $consultantsRepository): Response
     {
         return $this->render('consultants/index.html.twig', [
             'consultants' => $consultantsRepository->findAllBySql(),
         ]);
+    }
+
+    /**
+     * @Route("/data/tables", name="consultants_datatables", methods={"GET","POST"})
+     */
+    public function listConsultantsDatatable(ConsultantsRepository $consultantsRepository): String
+    {
+        $consultants = json_encode($consultantsRepository->findAllBySql());
+        $putain ="";
+        // dd(count($consultants), $consultants);
+        // for ($i=0; $i < count($consultants); $i++) { 
+        //     var_dump($consultants[$i]);
+        // }
+        $response = new Response;
+        $response->setStatusCode(200);
+        $response->setContent($consultants);
+        dd('END');
+        // return $response;
+        // return $this->json($consultantsRepository->findAllBySql(),200,[],[]);
     }
 
     /**
@@ -85,7 +106,7 @@ class ConsultantsController extends AbstractController
         }
         // dd($consultant);
         return $this->render('consultants/edit.html.twig', [
-            'consultant' => $consultant,
+            'consultants' => $consultant,
             'form' => $form->createView(),
         ]);
     }
@@ -103,4 +124,5 @@ class ConsultantsController extends AbstractController
 
         return $this->redirectToRoute('consultants_index');
     }
+    
 }

@@ -19,11 +19,26 @@
             <tr>
                 <td>{{ convocation.id }}</td>
                 <td>{{ convocation.dateconvocation ? convocation.dateconvocation|date('Y-m-d') : '' }}</td>
-                <td>{{ convocation.nbrpersonnes }}</td>
+                {% set pourcent = convocation.nbrconvoques / convocation.nbrpersonnes * 100 %}
+                {% set couleurTxt = 'white' %}
+                
+                {% if pourcent <= 33 %}
+                    {% set couleur = 'success' %}
+                {% elseif pourcent > 33 and pourcent <= 66 %}
+                    {% set couleur = 'warning' %}
+                {% else %}
+                    {% set couleur = '' %}
+                    {% set couleurTxt = 'danger' %}
+                {% endif %}
+                <td class="text-{{ couleurTxt }} bg-{{ couleur }} text-center" >
+                    <a href="{{ path('convocations_detail', {'idconvo': convocation.id}) }}"    class="text-{{ couleurTxt }} "     >
+                        <b>{{ convocation.nbrconvoques }} / {{ convocation.nbrpersonnes }}</b>
+                    </a>
+                </td>
                 <td>
-                    <a href="{{ path('convocations_show', {'idconvo': convocation.id}) }}"   class="btn-sm btn-primary fas fa-eye rounded"></a>
-                    <a href="{{ path('convocations_edit', {'idconvo': convocation.id}) }}"   class="btn-sm btn-success fas fa-edit ml-1"></a>
-                    <a href="{{ path('convocations_detail', {'idconvo': convocation.id}) }}" class="btn-sm btn-success fas fa-list ml-1"></a>
+                    <a href="{{ path('convocations_show',   {'idconvo': convocation.id}) }}"    class="btn-sm btn-primary fas fa-eye rounded"   ></a>
+                    <a href="{{ path('convocations_edit',   {'idconvo': convocation.id}) }}"    class="btn-sm btn-success fas fa-edit ml-1"     ></a>
+                    <a href="{{ path('convocations_detail', {'idconvo': convocation.id}) }}"    class="btn-sm btn-success fas fa-list ml-1"     ></a>
                 </td>
             </tr>
         {% else %}
